@@ -1,10 +1,13 @@
-﻿using System;
-using System.Net.Http;
-using log4net;
-using log4net.Config;
-
-namespace Fibonacci.Initiator
+﻿namespace Fibonacci.Initiator
 {
+    using System;
+    using System.Net.Http;
+
+    using log4net;
+    using log4net.Config;
+
+    using Microsoft.Owin.Hosting;
+
     internal class Program
     {
         private static void Main(string[] args)
@@ -12,18 +15,16 @@ namespace Fibonacci.Initiator
             XmlConfigurator.Configure();
 
             var log = LogManager.GetLogger("default");
-
             log.Info("Initiator A started");
 
-            string baseAddress = "http://localhost:9000/";
+            const string BaseAddress = "http://localhost:9000/";
 
-            // Start OWIN host 
-            using (WebApp.Start<Startup>(url: baseAddress))
+            using (WebApp.Start<Startup>(BaseAddress))
             {
-                // Create HttpCient and make a request to api/values 
-                HttpClient client = new HttpClient();
+                // Create HttpCient and make a request to api/values
+                var client = new HttpClient();
 
-                var response = client.GetAsync(baseAddress + "api/values").Result;
+                var response = client.GetAsync(BaseAddress + "api/values").Result;
 
                 Console.WriteLine(response);
                 Console.WriteLine(response.Content.ReadAsStringAsync().Result);
@@ -32,24 +33,6 @@ namespace Fibonacci.Initiator
             log.Info("Enter smth to stop");
 
             Console.ReadLine();
-        }
-    }
-
-    public class Startup
-    {
-        // This code configures Web API. The Startup class is specified as a type
-        // parameter in the WebApp.Start method.
-        public void Configuration(IAppBuilder appBuilder)
-        {
-            // Configure Web API for self-host. 
-            HttpConfiguration config = new HttpConfiguration();
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
-
-            appBuilder.UseWebApi(config);
         }
     }
 }
