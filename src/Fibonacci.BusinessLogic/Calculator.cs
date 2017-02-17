@@ -13,16 +13,11 @@
             this.apiAgent = apiAgent;
         }
 
-        public async Task InitializeCalculation()
+        public async Task Recieve(CalculationRequest request)
         {
-            await this.Recieve(1);
-        }
-
-        public async Task Recieve(long next)
-        {
-            var value = this.previous + next;
+            var value = this.previous + request.Value;
             this.previous = value;
-            await this.apiAgent.Send(new CalculateRequest { Value = value });
+            await this.apiAgent.Send(new CalculationRequest(request.CorrelationId, value));
         }
     }
 }

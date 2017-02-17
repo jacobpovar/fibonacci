@@ -1,38 +1,79 @@
 ﻿namespace Fibonacci.Initiator
 {
     using System;
-    using System.Net.Http;
+    using System.Threading.Tasks;
+
+    using Fibonacci.BusinessLogic;
 
     using log4net;
     using log4net.Config;
 
-    using Microsoft.Owin.Hosting;
+    using MassTransit;
 
-    internal class Program
+    using StructureMap;
+
+    public class Program
     {
         private static void Main(string[] args)
         {
             XmlConfigurator.Configure();
 
-            var log = LogManager.GetLogger("default");
-            log.Info("Initiator A started");
+            var threadsCount = GetThreadsCount(args);
 
-            const string BaseAddress = "http://localhost:9000/";
+            var bus = CreateBus();
+            var container = new Container(
+                c =>
+                    {
+                        c.For<ILog>().Use(_ => LogManager.GetLogger("default"));
+                        c.ForSingletonOf<IBus>().Use(bus).Singleton();
+                        c.For<ICalculatorPool>().Use<CalculatorPool>().Singleton();
+                        c.For<ICalculatorApi>().Use<MasstransitCalculatorApi>();
+                    });
 
-            using (WebApp.Start<Startup>(BaseAddress))
+            bus.Start();
+
+            var log = container.GetInstance<ILog>();
+            log.Info($"Initiator A started, using {threadsCount} threads");
+
+            var pool = container.GetInstance<ICalculatorPool>();
+
+            using (new CalculationApiServer(container).Start())
             {
-                // Create HttpCient and make a request to api/values
-                var client = new HttpClient();
+                log.Debug("starting calculation");
 
-                var response = client.GetAsync(BaseAddress + "api/values").Result;
+                Parallel.For(0, threadsCount, _ => pool.Receive(CalculationRequest.Initial));
 
-                Console.WriteLine(response);
-                Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+                log.Info("Enter smth to stop");
+
+                Console.ReadLine();
+            }
+        }
+
+        private static IBusControl CreateBus()
+        {
+            return Bus.Factory.CreateUsingRabbitMq(
+                configurator =>
+                    {
+                        configurator.Host(
+                            new Uri("rabbitmq://localhost"),
+                            hostConfigurator =>
+                                {
+                                    hostConfigurator.Username("guest");
+                                    hostConfigurator.Password("guest");
+                                });
+                    });
+        }
+
+        private static int GetThreadsCount(string[] args)
+        {
+            int threadsCount;
+
+            if (args.Length == 1 && int.TryParse(args[0], out threadsCount))
+            {
+                return threadsCount;
             }
 
-            log.Info("Enter smth to stop");
-
-            Console.ReadLine();
+            return Environment.ProcessorCount;
         }
     }
 }

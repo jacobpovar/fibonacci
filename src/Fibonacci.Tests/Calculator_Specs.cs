@@ -1,5 +1,6 @@
 ﻿namespace Fibonacci.Tests
 {
+    using System;
     using System.Threading.Tasks;
 
     using Fibonacci.BusinessLogic;
@@ -23,9 +24,9 @@
         [Fact]
         public async Task CallsCalculatorApiWithStartDataOnInit()
         {
-            await this.sut.InitializeCalculation();
+            await this.sut.Recieve(CalculationRequest.Initial);
 
-            this.apiAgent.Verify(x => x.Send(It.Is<CalculateRequest>(r => r.Value == 1)));
+            this.apiAgent.Verify(x => x.Send(It.Is<CalculationRequest>(r => r.Value == 1)));
         }
 
         [Theory]
@@ -34,14 +35,14 @@
         [InlineData(new long[] { 1, 3, 8 }, 13)]
         public async Task CalculatesNextDigitOnReceive(long[] receiveInput, long expectedNext)
         {
-            await this.sut.InitializeCalculation();
+            await this.sut.Recieve(CalculationRequest.Initial);
 
             foreach (var input in receiveInput)
             {
-                await this.sut.Recieve(input);
+                await this.sut.Recieve(new CalculationRequest(Guid.NewGuid(), input));
             }
 
-            this.apiAgent.Verify(x => x.Send(It.Is<CalculateRequest>(r => r.Value == expectedNext)));
+            this.apiAgent.Verify(x => x.Send(It.Is<CalculationRequest>(r => r.Value == expectedNext)));
         }
     }
 }

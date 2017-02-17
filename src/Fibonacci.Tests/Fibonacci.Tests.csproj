@@ -34,12 +34,72 @@
       <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="GreenPipes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
+      <HintPath>..\packages\GreenPipes.1.0.9\lib\net452\GreenPipes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MassTransit, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b8e0e9f2f1e657fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\MassTransit.3.5.5\lib\net452\MassTransit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MassTransit.TestFramework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b8e0e9f2f1e657fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\MassTransit.TestFramework.3.5.5\lib\net452\MassTransit.TestFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=2.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.2.0.2\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.HttpListener, Version=2.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.HttpListener.2.0.2\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Hosting, Version=2.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Hosting.2.0.2\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Moq, Version=4.5.30.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.5.30\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NewId, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b8e0e9f2f1e657fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\NewId.3.0.0\lib\net452\NewId.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap, Version=4.4.2.472, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StructureMap.4.4.2\lib\net45\StructureMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,17 +124,34 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiIntegration_Specs.cs" />
+    <Compile Include="CalculationController_Specs.cs" />
+    <Compile Include="CalculationRequestConsumer_Specs.cs" />
     <Compile Include="CalculatorIntegration_Specs.cs" />
+    <Compile Include="CalculatorPool_Specs.cs" />
     <Compile Include="Calculator_Specs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fibonacci.BusinessLogic\Fibonacci.BusinessLogic.csproj">
       <Project>{CAF0CB9A-76DD-482D-812E-168CB0CA7EA8}</Project>
       <Name>Fibonacci.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fibonacci.Contracts\Fibonacci.Contracts.csproj">
+      <Project>{2B46CE3C-5A13-4495-AF59-EB98151A5C84}</Project>
+      <Name>Fibonacci.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fibonacci.Initiator\Fibonacci.Initiator.csproj">
+      <Project>{F66CE81B-4EED-4B16-AD55-BEAEFFEC68D5}</Project>
+      <Name>Fibonacci.Initiator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fibonacci.Responder\Fibonacci.Responder.csproj">
+      <Project>{A2F436F8-A3B2-4DF2-834C-663165FBFD6F}</Project>
+      <Name>Fibonacci.Responder</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -4,6 +4,6 @@ namespace Fibonacci.BusinessLogic
 
     public interface ICalculatorApi
     {
-        Task Send(CalculateRequest calculateRequest);
+        Task Send(CalculationRequest calculationRequest);
     }
 }

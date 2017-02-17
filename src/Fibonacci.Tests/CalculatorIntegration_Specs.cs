@@ -4,6 +4,8 @@
 
     using Fibonacci.BusinessLogic;
 
+    using MassTransit.Logging;
+
     using Moq;
 
     using Xunit;
@@ -39,7 +41,7 @@
         {
             this.WireupCalculators(max);
 
-            await this.first.InitializeCalculation();
+            await this.first.Recieve(CalculationRequest.Initial);
 
             var result = await this.calculationResult.Task;
             Assert.Equal(expected, result);
@@ -47,15 +49,15 @@
 
         private void WireupCalculators(int max)
         {
-            this.firstApi.Setup(x => x.Send(It.IsAny<CalculateRequest>()))
+            this.firstApi.Setup(x => x.Send(It.IsAny<CalculationRequest>()))
                 .Returns(Task.CompletedTask)
                 .Callback(
-                    async (CalculateRequest request) =>
+                    async (CalculationRequest request) =>
                         {
                             if (this.count < max)
                             {
                                 this.count++;
-                                await this.second.Recieve(request.Value);
+                                await this.second.Recieve(request);
                             }
                             else
                             {
@@ -63,15 +65,15 @@
                             }
                         });
 
-            this.secondApi.Setup(x => x.Send(It.IsAny<CalculateRequest>()))
+            this.secondApi.Setup(x => x.Send(It.IsAny<CalculationRequest>()))
                 .Returns(Task.CompletedTask)
                 .Callback(
-                    async (CalculateRequest request) =>
+                    async (CalculationRequest request) =>
                         {
                             if (this.count < max)
                             {
                                 this.count++;
-                                await this.first.Recieve(request.Value);
+                                await this.first.Recieve(request);
                             }
                             else
                             {
