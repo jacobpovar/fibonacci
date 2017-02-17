@@ -1,10 +1,9 @@
-namespace Fibonacci.Initiator
+namespace Fibonacci.Responder.WebApiServer
 {
     using System;
     using System.Web.Http;
 
     using Fibonacci.Contracts;
-    using Fibonacci.Initiator.DependencyResolution;
 
     using Microsoft.Owin.Hosting;
 

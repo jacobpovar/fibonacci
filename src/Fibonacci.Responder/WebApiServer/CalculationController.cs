@@ -1,4 +1,4 @@
-namespace Fibonacci.Initiator
+namespace Fibonacci.Responder.WebApiServer
 {
     using System;
     using System.Collections.Generic;

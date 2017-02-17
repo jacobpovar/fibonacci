@@ -1,4 +1,4 @@
-﻿namespace Fibonacci.Responder
+﻿namespace Fibonacci.Initiator
 {
     using System.Threading.Tasks;
 

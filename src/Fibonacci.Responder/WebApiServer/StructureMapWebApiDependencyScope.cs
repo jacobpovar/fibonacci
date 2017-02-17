@@ -1,12 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http.Dependencies;
-
-using StructureMap;
-
-namespace Fibonacci.Initiator.DependencyResolution
+namespace Fibonacci.Responder.WebApiServer
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Http.Dependencies;
+
+    using StructureMap;
+
     /// <summary>
     /// The structure map web api dependency scope.
     /// </summary>
@@ -16,7 +16,7 @@ namespace Fibonacci.Initiator.DependencyResolution
 
         public StructureMapWebApiDependencyScope(IContainer container)
         {
-            _container = container;
+            this._container = container;
         }
 
         public object GetService(Type serviceType)
@@ -27,9 +27,9 @@ namespace Fibonacci.Initiator.DependencyResolution
             }
             try
             {
-                if (serviceType.IsAbstract || serviceType.IsInterface) return _container.TryGetInstance(serviceType);
+                if (serviceType.IsAbstract || serviceType.IsInterface) return this._container.TryGetInstance(serviceType);
 
-                return _container.GetInstance(serviceType);
+                return this._container.GetInstance(serviceType);
             }
             catch
             {
@@ -39,13 +39,13 @@ namespace Fibonacci.Initiator.DependencyResolution
 
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return _container.GetAllInstances<object>().Where(x => x.GetType() == serviceType);
+            return this._container.GetAllInstances<object>().Where(x => x.GetType() == serviceType);
         }
 
         public void Dispose()
         {
-            _container.Dispose();
-            _container = null;
+            this._container.Dispose();
+            this._container = null;
         }
     }
 }

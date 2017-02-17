@@ -1,13 +1,16 @@
 ﻿namespace Fibonacci.Responder
 {
     using System;
+    using System.Threading.Tasks;
 
     using Fibonacci.BusinessLogic;
+    using Fibonacci.Responder.WebApiServer;
 
     using log4net;
     using log4net.Config;
 
     using MassTransit;
+    using MassTransit.Log4NetIntegration;
 
     using StructureMap;
 
@@ -19,25 +22,32 @@
 
             var container = new Container();
 
-            var bus = CreateBus(container);
+            var bus = CreateBus();
 
             container.Configure(c =>
             {
                 c.For<ILog>().Use(_ => LogManager.GetLogger("default"));
                 c.ForSingletonOf<IBus>().Use(() => bus).Singleton();
                 c.For<ICalculatorPool>().Use<CalculatorPool>().Singleton();
-                c.For<ICalculatorApi>().Use<RestSharpApiAgent>();
+                c.For<ICalculatorApi>().Use<MasstransitCalculatorApi>();
             });
 
             bus.Start();
 
             var log = container.GetInstance<ILog>();
 
+            using (new CalculationApiServer(container).Start())
+            {
+                log.Info("Enter smth to stop");
+
+                Console.ReadLine();
+            }
+
             log.Info("Enter smth to stop");
             Console.ReadLine();
         }
 
-        private static IBusControl CreateBus(Container container)
+        private static IBusControl CreateBus()
         {
             return Bus.Factory.CreateUsingRabbitMq(
                 configurator =>
@@ -48,30 +58,10 @@
                         {
                             hostConfigurator.Username("guest");
                             hostConfigurator.Password("guest");
-
-
                         });
 
-                    configurator.PurgeOnStartup = true;
-
-                    configurator.ReceiveEndpoint("fibonacci.responder",
-                        endpointConfigurator =>
-                            {
-                                endpointConfigurator.Consumer<CalculationRequestConsumer>(container);
-                            });
+                    configurator.UseLog4Net();
                 });
-        }
-
-        private static int GetThreadsCount(string[] args)
-        {
-            int threadsCount;
-
-            if (args.Length == 1 && int.TryParse(args[0], out threadsCount))
-            {
-                return threadsCount;
-            }
-
-            return Environment.ProcessorCount;
         }
     }
 }

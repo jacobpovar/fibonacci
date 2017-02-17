@@ -5,6 +5,7 @@
     using Fibonacci.BusinessLogic;
     using Fibonacci.Initiator;
     using Fibonacci.Responder;
+    using Fibonacci.Responder.WebApiServer;
 
     using Moq;
 

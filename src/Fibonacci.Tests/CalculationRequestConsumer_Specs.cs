@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
 
     using Fibonacci.BusinessLogic;
+    using Fibonacci.Initiator;
     using Fibonacci.Responder;
 
     using MassTransit;

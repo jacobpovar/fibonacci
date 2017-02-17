@@ -15,12 +15,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Web.Http.Dependencies;
-using StructureMap;
-
-namespace Fibonacci.Initiator.DependencyResolution
+namespace Fibonacci.Responder.WebApiServer
 {
     using System.Linq;
+    using System.Web.Http.Dependencies;
+
+    using StructureMap;
 
     public class StructureMapWebApiDependencyResolver : IDependencyResolver
     {
@@ -34,7 +34,7 @@ namespace Fibonacci.Initiator.DependencyResolution
         /// </param>
         public StructureMapWebApiDependencyResolver(IContainer container)
         {
-            _container = container;
+            this._container = container;
         }
 
         #endregion
@@ -64,9 +64,9 @@ namespace Fibonacci.Initiator.DependencyResolution
             try
             {
                 if (serviceType.IsAbstract || serviceType.IsInterface)
-                    return _container.TryGetInstance(serviceType);
+                    return this._container.TryGetInstance(serviceType);
 
-                return _container.GetInstance(serviceType);
+                return this._container.GetInstance(serviceType);
             }
             catch
             {
@@ -76,14 +76,14 @@ namespace Fibonacci.Initiator.DependencyResolution
 
         public System.Collections.Generic.IEnumerable<object> GetServices(System.Type serviceType)
         {
-            return _container.GetAllInstances<object>().Where(x => x.GetType() == serviceType);
+            return this._container.GetAllInstances<object>().Where(x => x.GetType() == serviceType);
 
         }
 
         public void Dispose()
         {
-            _container.Dispose();
-            _container = null;
+            this._container.Dispose();
+            this._container = null;
         }
     }
 }

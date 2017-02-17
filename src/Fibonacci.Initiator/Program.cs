@@ -9,6 +9,7 @@
     using log4net.Config;
 
     using MassTransit;
+    using MassTransit.Log4NetIntegration;
 
     using StructureMap;
 
@@ -20,14 +21,16 @@
 
             var threadsCount = GetThreadsCount(args);
 
-            var bus = CreateBus();
-            var container = new Container(
+            var container = new Container();
+
+            var bus = CreateBus(container);
+            container.Configure(
                 c =>
                     {
                         c.For<ILog>().Use(_ => LogManager.GetLogger("default"));
                         c.ForSingletonOf<IBus>().Use(bus).Singleton();
                         c.For<ICalculatorPool>().Use<CalculatorPool>().Singleton();
-                        c.For<ICalculatorApi>().Use<MasstransitCalculatorApi>();
+                        c.For<ICalculatorApi>().Use<RestSharpApiAgent>();
                     });
 
             bus.Start();
@@ -37,19 +40,16 @@
 
             var pool = container.GetInstance<ICalculatorPool>();
 
-            using (new CalculationApiServer(container).Start())
-            {
-                log.Debug("starting calculation");
+            log.Debug("starting calculation");
 
-                Parallel.For(0, threadsCount, _ => pool.Receive(CalculationRequest.Initial));
+            Parallel.For(0, threadsCount, _ => pool.Receive(CalculationRequest.Initial));
 
-                log.Info("Enter smth to stop");
+            log.Info("Enter smth to stop");
 
-                Console.ReadLine();
-            }
+            Console.ReadLine();
         }
 
-        private static IBusControl CreateBus()
+        private static IBusControl CreateBus(Container container)
         {
             return Bus.Factory.CreateUsingRabbitMq(
                 configurator =>
@@ -60,6 +60,17 @@
                                 {
                                     hostConfigurator.Username("guest");
                                     hostConfigurator.Password("guest");
+                                });
+
+                        configurator.PurgeOnStartup = true;
+
+                        configurator.UseLog4Net();
+
+                        configurator.ReceiveEndpoint(
+                            "fibonacci.responder",
+                            endpointConfigurator =>
+                                {
+                                    endpointConfigurator.Consumer<CalculationRequestConsumer>(container);
                                 });
                     });
         }
