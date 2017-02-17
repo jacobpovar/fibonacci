@@ -15,7 +15,8 @@
 
             var request = new RestRequest("api/calculation", Method.POST);
 
-            request.AddJsonBody(calculationRequest);
+            request.AddParameter("correlationId", calculationRequest.CorrelationId, ParameterType.QueryString);
+            request.AddParameter("value", calculationRequest.Value.ToString(), ParameterType.QueryString);
 
             await client.ExecutePostTaskAsync(request).ConfigureAwait(false);
         }

@@ -52,6 +52,8 @@
 
                         });
 
+                    configurator.PurgeOnStartup = true;
+
                     configurator.ReceiveEndpoint("fibonacci.responder",
                         endpointConfigurator =>
                             {

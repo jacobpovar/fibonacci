@@ -1,5 +1,6 @@
 ﻿namespace Fibonacci.Tests
 {
+    using System.Numerics;
     using System.Threading.Tasks;
 
     using Fibonacci.BusinessLogic;
@@ -22,7 +23,7 @@
 
         private readonly Calculator second;
 
-        private readonly TaskCompletionSource<long> calculationResult;
+        private readonly TaskCompletionSource<BigInteger> calculationResult;
 
         public CalculatorIntegration_Specs()
         {
@@ -30,7 +31,7 @@
             this.secondApi = new Mock<ICalculatorApi>();
             this.first = new Calculator(this.firstApi.Object);
             this.second = new Calculator(this.secondApi.Object);
-            this.calculationResult = new TaskCompletionSource<long>();
+            this.calculationResult = new TaskCompletionSource<BigInteger>();
         }
 
         [Theory]

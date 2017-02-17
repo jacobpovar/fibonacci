@@ -1,10 +1,11 @@
 namespace Fibonacci.BusinessLogic
 {
     using System;
+    using System.Numerics;
 
     public class CalculationRequest
     {
-        public CalculationRequest(Guid correlationId, long value)
+        public CalculationRequest(Guid correlationId, BigInteger value)
         {
             this.CorrelationId = correlationId;
             this.Value = value;
@@ -12,11 +13,11 @@ namespace Fibonacci.BusinessLogic
 
         public Guid CorrelationId { get; set; }
 
-        public long Value { get; set; }
+        public BigInteger Value { get; set; }
 
         public static CalculationRequest Initial => new CalculationRequest(Guid.NewGuid(), 1);
 
-        public CalculationRequest WithValue(long value)
+        public CalculationRequest WithValue(BigInteger value)
         {
             return new CalculationRequest(this.CorrelationId, value);
         }

@@ -1,10 +1,11 @@
 ﻿namespace Fibonacci.BusinessLogic
 {
+    using System.Numerics;
     using System.Threading.Tasks;
 
     public class Calculator
     {
-        private long previous = 0;
+        private BigInteger previous = 0;
 
         private readonly ICalculatorApi apiAgent;
 

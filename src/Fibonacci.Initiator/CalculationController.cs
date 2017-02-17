@@ -1,6 +1,8 @@
 namespace Fibonacci.Initiator
 {
+    using System;
     using System.Collections.Generic;
+    using System.Numerics;
     using System.Threading.Tasks;
     using System.Web.Http;
 
@@ -21,9 +23,9 @@ namespace Fibonacci.Initiator
         }
 
         [HttpPost]
-        public async Task Calculate([FromBody] CalculationRequest request)
+        public async Task Calculate(Guid correlationId, string value)
         {
-            await this.calculatorPool.Receive(request);
+            await this.calculatorPool.Receive(new CalculationRequest(correlationId, BigInteger.Parse(value)));
         }
     }
 }

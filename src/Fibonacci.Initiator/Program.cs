@@ -68,7 +68,7 @@
         {
             int threadsCount;
 
-            if (args.Length == 1 && int.TryParse(args[0], out threadsCount))
+            if (args.Length == 1 && int.TryParse(args[0], out threadsCount) && threadsCount > 0)
             {
                 return threadsCount;
             }
