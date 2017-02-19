@@ -64,7 +64,7 @@
 
                         configurator.PurgeOnStartup = true;
 
-                        configurator.UseLog4Net();
+                        //configurator.UseLog4Net();
 
                         configurator.ReceiveEndpoint(
                             "fibonacci.responder",

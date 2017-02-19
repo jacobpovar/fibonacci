@@ -1,7 +1,6 @@
 ﻿namespace Fibonacci.Responder
 {
     using System;
-    using System.Threading.Tasks;
 
     using Fibonacci.BusinessLogic;
     using Fibonacci.Responder.WebApiServer;
@@ -60,7 +59,7 @@
                             hostConfigurator.Password("guest");
                         });
 
-                    configurator.UseLog4Net();
+                    //configurator.UseLog4Net();
                 });
         }
     }
